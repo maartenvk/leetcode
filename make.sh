@@ -1,3 +1,4 @@
 #!/bin/sh
 
-g++ src/0-main.cpp src/$1.cpp -g -o bin/$1
+g++ src/$1.cpp -g -o bin/$1 -Wall
+./bin/$1

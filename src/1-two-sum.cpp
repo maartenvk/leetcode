@@ -1,20 +1,37 @@
+#include <iostream>
 #include <vector>
+#include <unordered_map>
 
 class Solution {
 public:
     std::vector<int> twoSum(std::vector<int>& nums, int target) {
-        for (int a = 0; a < nums.size(); a++) {
-            for (int b = 0; b < nums.size(); b++) {
-                if (b == a)
-                    continue;
+        std::unordered_map<int, size_t> indices;
 
-                int c = nums[a] + nums[b];
-                if (c == target) {
-                    return {a, b};
+        for (auto it = nums.begin(); it != nums.end(); it++) {
+            int query = target - *it;
+            if (indices.find(query) != indices.end()) {
+                size_t dist = std::distance(nums.begin(), it);
+                if (indices[query] != dist) {
+                    return {int(dist), int(indices[query])};
                 }
             }
+
+            indices[*it] = std::distance(nums.begin(), it);
         }
 
-        return {0, 0};
+        return {};
     }
 };
+
+
+int main() {
+    std::vector<int> nums {3, 2, 4};
+
+    Solution s;
+    auto ans = s.twoSum(nums, 6);
+    if (ans.empty()) {
+        std::cout << "No result\n";
+    } else {
+        std::cout << ans[0] << ", " << ans[1] << std::endl;
+    }
+}
