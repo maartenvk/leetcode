@@ -11,10 +11,11 @@ struct ListNode {
 class Solution {
 public:
     ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
-        ListNode *result {nullptr}, *begin;
+        ListNode *result, *begin;
+        result = begin = new ListNode();
 
         int carry {0};
-        while (l1 || l2) {
+        while (l1 || l2 || carry) {
             int a {0}, b {0};
 
             if (l1) {
@@ -27,26 +28,17 @@ public:
                 l2 = l2->next;
             }
 
-            int c = a + b + carry;
-            if (!result) [[unlikely]] {
-                begin = result = new ListNode(c % 10);
-            } else {
-                result->next = new ListNode(c % 10);
-                result = result->next;
-            }
+            a += b + carry;
 
-            if (c > 9) {
-                carry = c / 10;
-            } else {
-                carry = 0;
-            }
+            result->next = new ListNode(a % 10);;
+            result = result->next;
+
+            carry = a > 9;
         }
 
-        if (carry) {
-            result->next = new ListNode(carry);
-        }
-
-        return begin;
+        auto head = begin->next;
+        delete begin;
+        return head;
     }
 };
 
