@@ -30,7 +30,7 @@ public:
 
             a += b + carry;
 
-            result->next = new ListNode(a % 10);;
+            result->next = new ListNode(a % 10);
             result = result->next;
 
             carry = a > 9;
