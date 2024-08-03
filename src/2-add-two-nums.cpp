@@ -29,11 +29,9 @@ public:
             }
 
             a += b + carry;
-
-            result->next = new ListNode(a % 10);
-            result = result->next;
-
             carry = a > 9;
+
+            result = result->next = new ListNode(a % 10);
         }
 
         auto head = begin->next;
