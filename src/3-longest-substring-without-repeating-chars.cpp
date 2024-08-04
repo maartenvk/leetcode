@@ -1,10 +1,11 @@
 #include <iostream>
 #include <unordered_set>
+#include <algorithm>
 
 class Solution {
 public:
     int lengthOfLongestSubstring(std::string s) {
-        std::string record;
+        size_t record{};
         std::unordered_set<char> seen;
 
         size_t i{0};
@@ -12,10 +13,7 @@ public:
             seen.clear();
             for (; (i + index) < s.length(); i++) {
                 if (seen.find(s[i + index]) != seen.end()) {
-                    if (i > record.size()) {
-                        record = s.substr(index, i);
-                    }
-
+                    record = std::max(i, record);
                     i = 0;
                     break;
                 }
@@ -23,12 +21,10 @@ public:
                 seen.insert(s[i + index]);
             }
 
-            if (i > 0 && i > record.size()) {
-                record = s.substr(index, i);
-            }
+            record = std::max(i, record);
         }
 
-        return record.size();
+        return record;
     }
 };
 
