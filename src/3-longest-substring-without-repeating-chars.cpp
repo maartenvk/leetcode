@@ -1,3 +1,4 @@
+#include <cstddef>
 #include <iostream>
 #include <unordered_set>
 #include <algorithm>
@@ -5,32 +6,33 @@
 class Solution {
 public:
     int lengthOfLongestSubstring(std::string s) {
-        size_t record{};
         std::unordered_set<char> seen;
 
-        size_t i{0};
-        for (size_t index = 0; index < s.length(); index++) {
-            seen.clear();
-            for (; (i + index) < s.length(); i++) {
-                if (seen.find(s[i + index]) != seen.end()) {
-                    record = std::max(i, record);
-                    i = 0;
-                    break;
-                }
+        size_t start{};
+        int record{}, count{};
+        for (size_t i = 0; i < s.length(); i++) {
+            char c = s[i];
+            if (seen.find(c) == seen.end()) {
+                seen.insert(c);
+                count++;
+            } else {
+                record = std::max(record, count);
+                seen.erase(seen.find(s[start]));
 
-                seen.insert(s[i + index]);
+                count--;
+                start++;
+                i--;
             }
-
-            record = std::max(i, record);
         }
 
+        record = std::max(record, count);
         return record;
     }
 };
 
 int main() {
     Solution s;
-    auto result = s.lengthOfLongestSubstring("aab");
+    auto result = s.lengthOfLongestSubstring("abcabcbb");
     std::cout << "Result: " << result << std::endl;
     return 0;
 }
