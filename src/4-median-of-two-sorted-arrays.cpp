@@ -5,12 +5,13 @@
 class Solution {
 public:
     double findMedianSortedArrays(std::vector<int>& nums1, std::vector<int>& nums2) {
-        std::vector<int> array;
-
         const size_t total_size = nums1.size() + nums2.size();
         const size_t middle = total_size / 2;
         const bool is_even = total_size % 2 == 0;
 
+        size_t i {0};
+
+        int data[2];
         std::vector<int>::const_iterator it1 = nums1.begin(), it2 = nums2.begin();
         while (it1 != nums1.end() || it2 != nums2.end()) {
             int a = std::numeric_limits<int>::max();
@@ -25,21 +26,23 @@ public:
             }
 
             if (a < b) {
-                array.push_back(a);
+                data[i & 1] = a;
                 it1++;
             } else {
-                array.push_back(b);
+                data[i & 1] = b;
                 it2++;
             }
 
-            if (array.size() == (middle + 1)) [[unlikely]] {
-                double median = array[middle];
+            if (i == middle) [[unlikely]] {
+                double median = data[i & 1];
                 if (is_even) {
-                    median = (median + array[middle - 1]) / 2.0;
+                    median = (median + data[(i - 1) & 1]) / 2.0;
                 }
 
                 return median;
             }
+
+            i++;
         }
 
         return 0;
