@@ -7,9 +7,9 @@ public:
     double findMedianSortedArrays(std::vector<int>& nums1, std::vector<int>& nums2) {
         std::vector<int> array;
 
-        size_t total_size = nums1.size() + nums2.size();
-        size_t middle = total_size / 2;
-        bool is_even = total_size % 2 == 0;
+        const size_t total_size = nums1.size() + nums2.size();
+        const size_t middle = total_size / 2;
+        const bool is_even = total_size % 2 == 0;
 
         std::vector<int>::const_iterator it1 = nums1.begin(), it2 = nums2.begin();
         while (it1 != nums1.end() || it2 != nums2.end()) {
@@ -32,7 +32,7 @@ public:
                 it2++;
             }
 
-            if (array.size() == (middle + 1)) {
+            if (array.size() == (middle + 1)) [[unlikely]] {
                 double median = array[middle];
                 if (is_even) {
                     median = (median + array[middle - 1]) / 2.0;
