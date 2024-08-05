@@ -7,7 +7,7 @@ public:
     double findMedianSortedArrays(std::vector<int>& nums1, std::vector<int>& nums2) {
         const size_t total_size = nums1.size() + nums2.size();
         const size_t middle = total_size / 2;
-        const bool is_even = total_size % 2 == 0;
+        const bool is_even = ~total_size & 1;
 
         size_t i {0};
 
