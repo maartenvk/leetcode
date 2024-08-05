@@ -14,8 +14,8 @@ public:
         int data[2];
         std::vector<int>::const_iterator it1 = nums1.begin(), it2 = nums2.begin();
         while (it1 != nums1.end() || it2 != nums2.end()) {
-            int a = std::numeric_limits<int>::max();
-            int b = std::numeric_limits<int>::max();
+            int a, b;
+            a = b = std::numeric_limits<int>::max();
 
             if (it1 != nums1.end()) {
                 a = *it1;
