@@ -13,7 +13,7 @@ public:
 
         int data[2];
         std::vector<int>::const_iterator it1 = nums1.begin(), it2 = nums2.begin();
-        while (it1 != nums1.end() || it2 != nums2.end()) {
+        while (i <= middle) {
             int a, b;
             a = b = std::numeric_limits<int>::max();
 
@@ -33,19 +33,16 @@ public:
                 it2++;
             }
 
-            if (i == middle) [[unlikely]] {
-                double median = data[i & 1];
-                if (is_even) {
-                    median = (median + data[(i - 1) & 1]) / 2.0;
-                }
-
-                return median;
-            }
-
             i++;
         }
+        i--;
 
-        return 0;
+        double median = data[i & 1];
+        if (is_even) {
+            median = (median + data[(i - 1) & 1]) / 2.0;
+        }
+
+        return median;
     }
 };
 
