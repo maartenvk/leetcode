@@ -1,23 +1,48 @@
 #include <iostream>
 #include <vector>
-#include <algorithm>
+#include <limits>
 
 class Solution {
 public:
     double findMedianSortedArrays(std::vector<int>& nums1, std::vector<int>& nums2) {
-        nums1.insert(nums1.end(), nums2.begin(), nums2.end());
+        std::vector<int> array;
 
-        auto& main_array = nums1;
-        std::sort(main_array.begin(), main_array.end());
+        size_t total_size = nums1.size() + nums2.size();
+        size_t middle = total_size / 2;
+        bool is_even = total_size % 2 == 0;
 
-        double median = main_array[main_array.size() / 2];
+        std::vector<int>::const_iterator it1 = nums1.begin(), it2 = nums2.begin();
+        while (it1 != nums1.end() || it2 != nums2.end()) {
+            int a = std::numeric_limits<int>::max();
+            int b = std::numeric_limits<int>::max();
 
-        bool even = nums1.size() % 2 == 0;
-        if (even) {
-            median = (median + main_array[main_array.size() / 2 - 1]) / 2.0;
+            if (it1 != nums1.end()) {
+                a = *it1;
+            }
+
+            if (it2 != nums2.end()) {
+                b = *it2;
+            }
+
+            if (a < b) {
+                array.push_back(a);
+                it1++;
+            } else {
+                array.push_back(b);
+                it2++;
+            }
+
+            if (array.size() == (middle + 1)) {
+                double median = array[middle];
+                if (is_even) {
+                    median = (median + array[middle - 1]) / 2.0;
+                }
+
+                return median;
+            }
         }
 
-        return median;
+        return 0;
     }
 };
 
