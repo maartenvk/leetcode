@@ -1,4 +1,3 @@
-#include <cstddef>
 #include <iostream>
 #include <sstream>
 
@@ -11,11 +10,11 @@ public:
             return s;
         }
 
-        // w: s length, h: numRows
-        ssize_t y {0};
+        int y {0};
         bool falling {true};
-        for (size_t i{0}; i < s.size(); i++) {
-            streams[y] << s.at(i);
+
+        for (char c : s) {
+            streams[y] << c;
 
             if (falling) {
                 y++;
@@ -23,21 +22,18 @@ public:
                 y--;
             }
 
-            if (y == ssize_t(numRows)) {
+            if (y == numRows) {
                 y -= 2;
                 falling = false;
             }
 
-            if (y < 0) {
+            if (y <= 0) {
                 y = 0;
-            }
-
-            if (y == 0) {
                 falling = true;
             }
         }
 
-        for (size_t i = 1; i < size_t(numRows); i++) {
+        for (int i = 1; i < numRows; i++) {
             streams[0] << streams[i].str();
         }
 
