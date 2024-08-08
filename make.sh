@@ -5,5 +5,5 @@ if [ $1 == "clean" ]; then
     exit
 fi
 
-g++ src/$1*.cpp -g -o bin/$1 -Wall
+g++ src/$1*.cpp -g -o bin/$1 -Wall -Wextra
 ./bin/$1
