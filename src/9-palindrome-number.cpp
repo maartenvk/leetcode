@@ -4,36 +4,20 @@
 class Solution {
 public:
     bool isPalindrome(int x) {
-        if (x < 0) [[unlikely]] {
+        if (x < 0 || x > 10) [[unlikely]] {
             return false;
         }
-
-        if (x < 10) [[unlikely]] {
-            return true;
-        }
         
-        // get leftmost digit index
         int copy {x};
-        int il {-1}; // index left
-        while (copy) {
-            copy /= 10;
-            il++;
+        int64_t reversed {0};
+
+        while (x) {
+            reversed *= 10;
+            reversed += x % 10;
+            x /= 10;
         }
 
-        int ir {0};
-        while (il > ir) {
-            int a {x / int(std::pow(10., (float)il)) % 10};
-            int b {x / int(std::pow(10., (float)ir)) % 10};
-
-            if (a != b) {
-                return false;
-            }
-            
-            il--;
-            ir++;
-        }
-
-        return true;
+        return reversed == copy;
     }
 };
 
