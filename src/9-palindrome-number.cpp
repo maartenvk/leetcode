@@ -4,20 +4,20 @@
 class Solution {
 public:
     bool isPalindrome(int x) {
-        if (x < 0 || x > 10) [[unlikely]] {
+        if (x < 0) [[unlikely]] {
             return false;
         }
         
         int copy {x};
         int64_t reversed {0};
 
-        while (x) {
+        while (copy) {
             reversed *= 10;
-            reversed += x % 10;
-            x /= 10;
+            reversed += copy % 10;
+            copy /= 10;
         }
 
-        return reversed == copy;
+        return reversed == x;
     }
 };
 
