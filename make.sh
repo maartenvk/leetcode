@@ -1,5 +1,9 @@
 #!/bin/sh
 
+if [ ! -d "bin/" ]; then
+    mkdir bin/
+fi
+
 if [ $1 == "clean" ]; then
     rm bin/*
     exit
