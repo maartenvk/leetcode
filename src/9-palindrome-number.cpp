@@ -1,5 +1,5 @@
 #include <iostream>
-#include <vector>
+#include <cmath>
 
 class Solution {
 public:
@@ -12,23 +12,25 @@ public:
             return true;
         }
         
-        std::vector<int> scratch;
-        while (x) {
-            scratch.push_back(x % 10);
-            x /= 10;
+        // get leftmost digit index
+        int copy {x};
+        int il {-1}; // index left
+        while (copy) {
+            copy /= 10;
+            il++;
         }
 
-        std::vector<int>::const_iterator itl, itr; // iterator left, right
-        itl = scratch.begin();
-        itr = scratch.end() - 1;
+        int ir {0};
+        while (il > ir) {
+            int a {x / int(std::pow(10., (float)il)) % 10};
+            int b {x / int(std::pow(10., (float)ir)) % 10};
 
-        while (itl < itr) {
-            if (*itl != *itr) {
+            if (a != b) {
                 return false;
             }
-
-            itl++;
-            itr--;
+            
+            il--;
+            ir++;
         }
 
         return true;
@@ -37,7 +39,7 @@ public:
 
 int main() {
     Solution s;
-    auto result = s.isPalindrome(10101);
+    auto result = s.isPalindrome(1221);
     
     std::cout << "Result: " << result << std::endl;
     return 0;
