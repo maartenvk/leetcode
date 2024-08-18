@@ -25,7 +25,6 @@ public:
 int main() {
     Solution s;
     int32_t result = s.reverse(1534236469);
-   // result = s.reverse(321);
 
     std::cout << "Result: " << result << std::endl;
     return 0;
