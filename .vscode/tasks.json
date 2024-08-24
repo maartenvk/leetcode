@@ -11,7 +11,8 @@
                 "-o",
                 "${workspaceFolder}\\bin\\${fileBasenameNoExtension}.exe",
                 "-Wall",
-                "-Wextra"
+                "-Wextra",
+                "-std=c++17"
             ],
             "options": {
                 "cwd": "${fileDirname}"
