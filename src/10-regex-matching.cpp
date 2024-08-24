@@ -16,7 +16,7 @@ class Solution {
     }
 
     bool dp(int i, int j) {
-        if (!in_bounds(i, j)) {
+        if (!in_bounds(i, j)) [[unlikely]] {
             return false;
         }
 
