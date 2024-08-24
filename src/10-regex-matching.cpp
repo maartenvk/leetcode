@@ -2,89 +2,68 @@
 #include <string_view>
 
 class Solution {
-    size_t s_size, p_size;
+    char const* text;
+    char const* pattern;
 
-    bool is_match(char const* const s, char const* const p, size_t s_idx = 0, size_t p_idx = 0) {
-        if (p_idx >= p_size) [[unlikely]] { // exhausted pattern
-            return s_idx >= s_size;
+    int text_size;
+    int pattern_size;
+
+    bool** memo;
+    bool** is_set;
+
+    bool in_bounds(int i, int j) {
+        return i < text_size + 1 && j < pattern_size + 1;
+    }
+
+    bool dp(int i, int j) {
+        if (!in_bounds(i, j)) {
+            return false;
         }
 
-        if (s_idx >= s_size) [[unlikely]] { // exhausted string before pattern
-            // if continuously followed with letters and '*', it can still match
-            if (p[p_idx] == '*') {
-                p_idx++;
-            }
-
-            bool has_next;
-            for (bool valid = p_idx < p_size; valid; valid = p_idx < p_size) {
-                has_next = (p_idx + 1) < p_size;
-                char next = has_next ? p[p_idx + 1] : '\0';
-
-                if (has_next && next == '*') {
-                    p_idx += 2;
-                } else {
-                    return false;
-                }
-            }
-
-            return p[p_idx - 1] == '*';
+        if (is_set[i][j]) {
+            return memo[i][j];
         }
 
-        char s_cur {s[s_idx]};
-        char p_cur {p[p_idx]};
+        is_set[i][j] = true;
 
-        if (s_cur == p_cur || p_cur == '.') [[likely]] {
-            if (is_match(s, p, s_idx + 1, p_idx + 1)) {
-                return true;
-            }
+        if (j == pattern_size) {
+            return memo[i][j] = i == text_size;
         }
 
-        if (p_cur == '*') {
-            // is current string char valid?
-            char p_prev {p[p_idx - 1]};
-            if (p_prev == '.' || p_prev == s_cur) {
-                // it matches. continue
-                bool result = is_match(s, p, s_idx + 1, p_idx);
-                if (result) {
-                    return true;
-                }
-
-                // if it does not match, try skipping the current pattern char.
-                result = is_match(s, p, s_idx + 1, p_idx + 1);
-                if (result) {
-                    return true;
-                }
-
-                // there was only one present and the next character was the repeating char.
-                return is_match(s, p, s_idx, p_idx + 1);
-            } else {
-                // there was only one present, skip
-                return is_match(s, p, s_idx, p_idx + 1);
-            }
+        bool first_match = (i < text_size && pattern[j] == text[i]) || pattern[j] == '.';
+        if (j + 1 < pattern_size && pattern[j + 1] == '*') {
+            return memo[i][j] = dp(i, j + 2) || (first_match && dp(i + 1, j));
         }
 
-        // with '*' if there are zero present, skip
-        bool has_next = (p_idx + 1) < p_size;
-        if (has_next && p[p_idx + 1] == '*') {
-            return is_match(s, p, s_idx, p_idx + 2);
-        }
-
-        return false;
+        return memo[i][j] = first_match && dp(i + 1, j + 1);
     }
 
 public:
     bool isMatch(std::string_view s, std::string_view p) {
-        s_size = s.size();
-        p_size = p.size();
+        text = s.data();
+        pattern = p.data();
 
-        return is_match(s.data(), p.data());
+        text_size = int(s.size());
+        pattern_size = int(p.size());
+
+        memo = new bool*[text_size + 1];
+        is_set = new bool*[text_size + 1];
+        for (int i = 0; i < text_size + 1; i++) {
+            memo[i] = new bool[pattern_size + 1];
+            is_set[i] = new bool[pattern_size + 1];
+            for (int j = 0; j < pattern_size + 1; j++) {
+                is_set[i][j] = false;
+            }
+        }
+
+        return dp(0, 0);
     }
 };
 
 int main() {
     Solution s;
-    auto result = s.isMatch("aaaaaaaaaaaaaaaaaaab", "a*a*a*a*a*a*a*a*a*a*");
+    auto result = s.isMatch("ab", ".*c");
 
-    std::cout << "Result: " << result << std::endl;
+    std::cout << "Result: " << (result & 0b1) << std::endl;
     return 0;
 }
