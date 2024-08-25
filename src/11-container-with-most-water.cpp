@@ -1,29 +1,28 @@
 #include <iostream>
 #include <vector>
-#include <limits>
-#include <cmath>
 
 class Solution {
 public:
-    int maxArea(std::vector<int>& height) {
+    int maxArea(std::vector<int>& height) noexcept {
         int const* const height_nonvec = height.data();
         int greatest_volume {0};
 
         int i {0}, j {int(height.size()) - 1};
         int a {height_nonvec[i]}, b {height_nonvec[j]};
         while (j > i) {
-            int height = std::min(a, b);
             int width {j - i};
-
-            int calculated_volume = height * width;
-            if (calculated_volume > greatest_volume) {
-                greatest_volume = calculated_volume;
-            }
+            int calculated_volume;
 
             if (a < b) {
+                calculated_volume = a * width;
                 a = height_nonvec[++i];
             } else {
+                calculated_volume = b * width;
                 b = height_nonvec[--j];
+            }
+
+            if (calculated_volume > greatest_volume) {
+                greatest_volume = calculated_volume;
             }
         }
 
