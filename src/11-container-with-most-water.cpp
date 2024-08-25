@@ -3,22 +3,19 @@
 
 class Solution {
 public:
-    int maxArea(std::vector<int>& height) noexcept {
-        int const* const height_nonvec = height.data();
+    __attribute__((always_inline)) int inline maxArea(std::vector<int> const& height) const noexcept {
+        int const* const arr = height.data();
         int greatest_volume {0};
 
         int i {0}, j {int(height.size()) - 1};
-        int a {height_nonvec[i]}, b {height_nonvec[j]};
         while (j > i) {
+            int a {arr[i]}, b {arr[j]};
             int calculated_volume {j - i};
 
-            if (a < b) {
-                calculated_volume *= a;
-                a = height_nonvec[++i];
-            } else {
-                calculated_volume *= b;
-                b = height_nonvec[--j];
-            }
+            bool comparison = (a < b);
+            calculated_volume *= comparison * a + !comparison * b;
+            i += comparison;
+            j -= !comparison;
 
             if (calculated_volume > greatest_volume) {
                 greatest_volume = calculated_volume;
