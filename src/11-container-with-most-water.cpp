@@ -10,14 +10,13 @@ public:
         int i {0}, j {int(height.size()) - 1};
         int a {height_nonvec[i]}, b {height_nonvec[j]};
         while (j > i) {
-            int width {j - i};
-            int calculated_volume;
+            int calculated_volume {j - i};
 
             if (a < b) {
-                calculated_volume = a * width;
+                calculated_volume *= a;
                 a = height_nonvec[++i];
             } else {
-                calculated_volume = b * width;
+                calculated_volume *= b;
                 b = height_nonvec[--j];
             }
 
